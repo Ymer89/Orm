@@ -13,8 +13,10 @@ namespace Orm
                 "\nDu förlorar spelet om du nuddar skärmens kanter.\nDu styr ormen med piltangenterna på datorns tangentbord:" +
                 "\n\nUppåtpil för att röra sig uppåt\nNeråtpil för att röra sig neråt\nVänsterpil för att röra sig till vänster" +
                 "\nHögerpil för att röra sig till höger\n\nÄr du redo, Svara ja för att börja spela och nej för att avsluta.\n");
+
                 string svar = "";
                 svar = Console.ReadLine();
+
                 if (svar.ToLower() == "ja")
                 {
                     Console.Clear();
@@ -64,7 +66,6 @@ namespace Orm
             {
                 switch (utför)
                 {
-
                     case ConsoleKey.LeftArrow:
                         Console.SetCursorPosition(xPlats, yPlats);
                         Console.Write(" ");
@@ -88,7 +89,6 @@ namespace Orm
                         Console.Write(" ");
                         yPlats++;
                         break;
-
                 }
 
                 //Fäster ormen på skärmen med position och karaktärsdrag.
@@ -111,7 +111,7 @@ namespace Orm
 
                 }
 
-                //Upptäcker om ormen ätit bäret via en bool.
+               //Upptäcker om ormen ätit bäret via en bool.
                 ärBäretUppätet = BestämOmBäretÄrUppätet(xPlats, yPlats, bärXStorlek, bärYStorlek);
 
                 //En bool placerar slumpmässigt ut ett nytt bär om det blivit uppätet via slumpmetod och en method som beskriver bäret.
@@ -125,16 +125,12 @@ namespace Orm
                     spelHastighet *= .925m;
                 }
 
-
-
                 if (Console.KeyAvailable) utför = Console.ReadKey().Key;
                 //Saktar ner spelhastigheten för att göra det spelbart efter en knapptryckning.
                 System.Threading.Thread.Sleep(Convert.ToInt32(spelHastighet));
 
             } while (spelasDet);
-
         }
-
         private static bool RördeOrmenVäggen(int xPosition, int yPosition)
         {
             if (xPosition == 1 || xPosition == 70 || yPosition == 1 || yPosition == 40) return true; return false;
@@ -164,7 +160,6 @@ namespace Orm
             bärXStorlek = slump.Next(0 + 2, 70 - 2);
             bärYStorlek = slump.Next(0 + 2, 40 - 2);
         }
-
         private static void MålaBär(int bärXStorlek, int bärYStorlek)
         {
             Console.SetCursorPosition(bärXStorlek, bärYStorlek);
