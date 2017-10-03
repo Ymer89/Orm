@@ -10,28 +10,21 @@ namespace Orm
     {
         static void Main(string[] args)
         {
-            int[] xPlats = new int[50];
-               xPlats[0] = 45;
-            int[] yPlats = new int[50];
-               yPlats[0] = 35;
+            int xPlats = 45;
+            int yPlats = 35;
             int bärXStorlek = 5;
             int bärYStorlek = 5;
-            int uppÄtnaBär = 0;
 
-            decimal spelHastighet = 100m;
+            int spelHastighet = 100;
 
             bool spelasDet = true;
             bool rörsVäggen = false;
-            bool ärBäretuppätet = false;
 
             Random slump = new Random();
 
-            Console.CursorVisible = false;
-
-            MålaOrm(uppÄtnaBär, xPlats, yPlats, out xPlats, out yPlats);
-
-            SättBärPositionPåSkärm(slump, out bärXStorlek, out bärYStorlek);
-            MålaBär(bärXStorlek, bärYStorlek);
+            Console.SetCursorPosition(xPlats, yPlats);
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine((char)213);
 
             ByggVägg();
 
@@ -43,33 +36,36 @@ namespace Orm
                 {
 
                     case ConsoleKey.LeftArrow:
-                        Console.SetCursorPosition(xPlats[0], yPlats[0]);
+                        Console.SetCursorPosition(xPlats, yPlats);
                         Console.Write(" ");
-                        xPlats[0]--;
+                        xPlats--;
                         break;
 
                     case ConsoleKey.UpArrow:
-                        Console.SetCursorPosition(xPlats[0], yPlats[0]);
+                        Console.SetCursorPosition(xPlats, yPlats);
                         Console.Write(" ");
-                        yPlats[0]--;
+                        yPlats--;
                         break;
 
                     case ConsoleKey.RightArrow:
-                        Console.SetCursorPosition(xPlats[0], yPlats[0]);
+                        Console.SetCursorPosition(xPlats, yPlats);
                         Console.Write(" ");
-                        xPlats[0]++;
+                        xPlats++;
                         break;
 
                     case ConsoleKey.DownArrow:
-                        Console.SetCursorPosition(xPlats[0], yPlats[0]);
+                        Console.SetCursorPosition(xPlats, yPlats);
                         Console.Write(" ");
-                        yPlats[0]++;
+                        yPlats++;
                         break;
 
                 }
 
-                MålaOrm(uppÄtnaBär, xPlats, yPlats, out xPlats, out yPlats);
-                rörsVäggen = RördeOrmenVäggen(xPlats[0], yPlats[0]);
+                Console.SetCursorPosition(xPlats, yPlats);
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine((char)213);
+
+                rörsVäggen = RördeOrmenVäggen(xPlats, yPlats);
 
                 if (rörsVäggen)
                 {
@@ -79,48 +75,27 @@ namespace Orm
 
                 }
 
-                ärBäretuppätet = BestämOmbäretärUppätet(xPlats[0], yPlats[0], bärXStorlek, bärYStorlek);
-                if (ärBäretuppätet)
-                {
-                    SättBärPositionPåSkärm(slump, out bärXStorlek, out bärYStorlek);
-                    MålaBär(bärXStorlek, bärYStorlek);
-                    uppÄtnaBär++;
-                    spelHastighet *= .925m;
-                }
-                
+                SättBärPositionPåSkärm(slump, out bärXStorlek, out bärYStorlek);
+                MålaBär(bärXStorlek, bärYStorlek);
 
                 if (Console.KeyAvailable) utför = Console.ReadKey().Key;
-                System.Threading.Thread.Sleep(Convert.ToInt32(spelHastighet));
+                System.Threading.Thread.Sleep(spelHastighet);
 
             } while (spelasDet);
            
         }
 
-        private static void MålaOrm(int uppÄtnaBär, int[] xPlatsIn, int[] yPlatsIn, out int[] xPlatsUt, out int[] yPlatsUt)
+        private static void MålaBär(int bärXStorlek, int bärYStorlek)
         {
+            Console.SetCursorPosition(bärXStorlek, bärYStorlek);
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.Write((char)64);
+        }
 
-            Console.SetCursorPosition(xPlatsIn[0], yPlatsIn[0]);
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine((char)213);
-
-            for (int i = 1; i < uppÄtnaBär + 1; i++)
-            {
-                Console.SetCursorPosition(xPlatsIn[i], yPlatsIn[i]);
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("o");
-            }
-
-            Console.SetCursorPosition(xPlatsIn[uppÄtnaBär + 1], yPlatsIn[uppÄtnaBär + 1]);
-            Console.WriteLine(" ");
-
-            for (int i = uppÄtnaBär + 1; i > 0; i--)
-            {
-                xPlatsIn[i] = xPlatsIn[i - 1];
-                yPlatsIn[i] = yPlatsIn[i - 1];
-            }
-
-            xPlatsUt = yPlatsIn;
-            yPlatsUt = yPlatsIn;
+        private static void SättBärPositionPåSkärm(Random slump, out int bärXStorlek, out int bärYStorlek)
+        {
+            bärXStorlek = slump.Next(0+2, 70-2);
+            bärYStorlek = slump.Next(0+2, 40-2);
         }
 
         private static bool RördeOrmenVäggen(int xPosition, int yPosition)
@@ -145,21 +120,6 @@ namespace Orm
                 Console.SetCursorPosition(i, 40);
                 Console.Write("#");
             }
-        }
-        private static void SättBärPositionPåSkärm(Random slump, out int bärXStorlek, out int bärYStorlek)
-        {
-            bärXStorlek = slump.Next(0 + 2, 70 - 2);
-            bärYStorlek = slump.Next(0 + 2, 40 - 2);
-        }
-        private static void MålaBär(int bärXStorlek, int bärYStorlek)
-        {
-            Console.SetCursorPosition(bärXStorlek, bärYStorlek);
-            Console.ForegroundColor = ConsoleColor.Blue;
-            Console.Write((char)64);
-        }
-        private static bool BestämOmbäretärUppätet(int xPlats, int yPlats, int bärXStorlek, int bärYStorlek)
-        {
-            if (xPlats == bärXStorlek && yPlats == bärYStorlek) return true; return false;
         }
     }
 }
